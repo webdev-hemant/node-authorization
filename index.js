@@ -6,7 +6,7 @@ const cors = require("cors");
 const loginRouter = require("./Routes/LoginRoute");
 dotenv.config({ path: "./.env" });
 const app = express();
-const PORT = process.env.PORTNUMBER;
+const PORT = process.env.PORT || 8000;
 
 //add public folder
 app.use(express.static("public"));
