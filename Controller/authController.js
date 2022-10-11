@@ -1,6 +1,8 @@
-const handleLogin = (req, res, next) => {
+module.exports.signup = (req, res, next) => {
   console.log(req.body);
   res.send({ body: req.body });
 };
-
-module.exports = { handleLogin };
+module.exports.login = (req, res, next) => {
+  console.log(req.body);
+  res.send({ body: req.body });
+};
