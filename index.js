@@ -1,6 +1,5 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const authRouter = require("./Routes/authRoute");
@@ -15,8 +14,7 @@ app.use(express.static("public"));
 const dbURI = process.env.MONGODB;
 
 // middlewares
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 // mongo connect
