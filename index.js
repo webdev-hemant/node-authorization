@@ -1,17 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const dotenv = require("dotenv");
+const cors = require("cors");
 const loginRouter = require("./Routes/LoginRoute");
-const app = express();
-const PORT = process.env.PORT || 7000;
 dotenv.config({ path: "./.env" });
+const app = express();
+const PORT = process.env.PORTNUMBER;
+
 //add public folder
 app.use(express.static("public"));
 
 // database connection
-const diURI = process.env.MONGODBURI || "";
+const dbURI = process.env.MONGODB;
 
 // middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -21,11 +22,21 @@ app.use(cors());
 //routes middlewares
 app.use(loginRouter);
 
+// mongo connect
+mongoose
+  .connect(dbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    // useCreateIndex: true,
+  })
+  .then(() =>
+    app.listen(PORT, () => {
+      console.log(`mongodb conected and server started on port ${PORT}`);
+    })
+  )
+  .catch((err) => console.log({ err }));
+
 // all Routes
 app.get("/", (req, res) => {
   res.send({ message: "Yes its working!" });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port = ${PORT}`);
 });
