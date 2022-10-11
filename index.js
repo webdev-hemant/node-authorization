@@ -19,15 +19,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-//routes middlewares
-app.use(loginRouter);
-
 // mongo connect
 mongoose
   .connect(dbURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useCreateIndex: true,
   })
   .then(() =>
     app.listen(PORT, () => {
@@ -36,7 +32,10 @@ mongoose
   )
   .catch((err) => console.log({ err }));
 
-// all Routes
+//routes middlewares
+app.use(loginRouter);
+
+// Home Route
 app.get("/", (req, res) => {
   res.send({ message: "Yes its working!" });
 });
