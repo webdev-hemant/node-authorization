@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const loginRouter = require("./Routes/LoginRoute");
+const authRouter = require("./Routes/authRoute");
 dotenv.config({ path: "./.env" });
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -33,7 +33,7 @@ mongoose
   .catch((err) => console.log({ err }));
 
 //routes middlewares
-app.use(loginRouter);
+app.use(authRouter);
 
 // Home Route
 app.get("/", (req, res) => {
