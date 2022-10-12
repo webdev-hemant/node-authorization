@@ -7,9 +7,8 @@ module.exports.signup = async (req, res, next) => {
     res.status(201);
     res.send({ user });
   } catch (error) {
-    console.log({ error });
     res.status(400);
-    res.send("error, user not created!");
+    res.send({ error });
   }
 };
 
