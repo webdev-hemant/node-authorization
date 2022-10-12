@@ -36,7 +36,7 @@ mongoose
 app.use(authRouter);
 
 // check user
-app.get("*", checkUser);
+// app.get("*", checkUser);
 
 // Home Route
 app.get("/", (req, res) => {
