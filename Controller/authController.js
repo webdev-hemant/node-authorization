@@ -3,6 +3,14 @@ const User = require("../models/Users");
 
 const handleErrors = (err = {}) => {
   const error = {};
+  // login--------------------------------------------
+  if (err.message === "incorrect email") {
+    error.email = "email is invalid";
+  }
+  if (err.message === "incorrect password") {
+    error.password = "password is incorrect";
+  }
+  // signup-------------------------------------------
   if (err.code === 11000) {
     error.email = "Email already registered!";
     return error;
@@ -31,11 +39,19 @@ module.exports.signup = async (req, res, next) => {
     res.status(201).json({ user: user._id });
   } catch (err) {
     const errors = handleErrors(err);
-    res.status(400).send({ errors });
+    res.status(400).json({ errors });
   }
 };
 
 module.exports.login = async (req, res, next) => {
-  console.log(req.body);
-  res.send({ body: req.body });
+  const { email, password } = req.body;
+  try {
+    const user = await User.login(email, password);
+    const token = createJwt(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ user: user._id });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
+  }
 };
