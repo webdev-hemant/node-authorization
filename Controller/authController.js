@@ -1,14 +1,27 @@
 const User = require("../models/Users");
 
+const handleErrors = (err = {}) => {
+  const error = {};
+  if (err.code === 11000) {
+    error.email = "Email already registered!";
+    return error;
+  }
+  if (err.message.includes("user validation failed")) {
+    Object.values(err.errors).forEach(({ properties }) => {
+      error[properties.path] = properties.message;
+    });
+  }
+  return error;
+};
+
 module.exports.signup = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const user = await User.create({ email, password });
-    res.status(201);
-    res.send({ user });
-  } catch (error) {
-    res.status(400);
-    res.send({ error });
+    res.status(201).json({ user });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).send({ errors });
   }
 };
 
