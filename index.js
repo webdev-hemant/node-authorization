@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+require("dotenv").config({ path: "./.env" });
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./Routes/authRoute");
-dotenv.config({ path: "./.env" });
+const { requireAuth } = require("./middleware/authMiddleware");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -38,4 +38,9 @@ app.use(authRouter);
 // Home Route
 app.get("/", (req, res) => {
   res.send({ message: "Yes its working!" });
+});
+
+//required auth
+app.get("/dashboard", requireAuth, (req, res) => {
+  res.send({ message: "auth successfull" });
 });
