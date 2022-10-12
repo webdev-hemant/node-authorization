@@ -4,7 +4,7 @@ require("dotenv").config({ path: "./.env" });
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./Routes/authRoute");
-const { requireAuth } = require("./middleware/authMiddleware");
+const { requireAuth, checkUser } = require("./middleware/authMiddleware");
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -34,6 +34,9 @@ mongoose
 
 //routes middlewares
 app.use(authRouter);
+
+// check user
+app.get("*", checkUser);
 
 // Home Route
 app.get("/", (req, res) => {
